@@ -1,0 +1,8 @@
+# dependencies
+/node_modules
+
+# npm package lock file
+package-lock.json
+
+# dotenv environment variables file
+.env
