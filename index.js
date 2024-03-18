@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // cors 
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ credentials: true, origin: 'https://haveliwalanusaratfrontendtwitter.onrender.com' }));
 
 
 // using tweet routes
