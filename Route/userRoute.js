@@ -145,10 +145,12 @@ router.post("/login", async (req,res)=>{
         // //add jwt token for cookies
         // res.cookie('jwt', token, { httpOnly: false, maxAge: 36000000000 }); // 1 hour expiration
 
+        
         res.cookie('jwt', token, {
             httpOnly: true,
             maxAge: 3600000, // 1 hour in milliseconds
-            sameSite: 'None', // You can change this based on your requirements
+            sameSite: 'None', // Required for cross-site cookies
+            secure: true, // Ensures the cookie is sent only over HTTPS
             path: '/',
         });
 
