@@ -155,17 +155,8 @@ res.cookie('jwt', token, {
     path: '/',
 });
 
-// Set the token as another cookie named 'token'
-res.cookie('token', token, {
-    httpOnly: true,
-    maxAge: 3600000, // 1 hour in milliseconds
-    sameSite: 'None', // Required for cross-site cookies
-    secure: true, // Ensures the cookie is sent only over HTTPS
-    path: '/',
-});
-
         // login sucsee
-        res.status(200).json({err:false,message:"Login Sucsess...",mail:existingUser.email ,id:existingUser._id});
+    res.status(200).json({err:false,message:"Login Sucsess...",mail:existingUser.email ,id:existingUser._id});
 
     }catch(err){
         // err code
