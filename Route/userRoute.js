@@ -148,7 +148,7 @@ router.post("/login", async (req,res)=>{
         res.cookie('jwt', token, {
             httpOnly: true,
             maxAge: 3600000, // 1 hour in milliseconds
-            sameSite: 'Lax', // You can change this based on your requirements
+            sameSite: 'None', // You can change this based on your requirements
             path: '/',
         });
 
