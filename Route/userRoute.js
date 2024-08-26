@@ -872,6 +872,62 @@ router.get('/feed/:page', auth, async (req, res) => {
 });
 
 
+// login
+router.post("/login-v2", async (req,res)=>{
+
+    try{
+        const { email ,password } = req.body;
+
+        //console.log(req.body);
+        
+        // check if details are not empty
+        if (validator.isEmpty(email) || validator.isEmpty(password)) {
+            return res.status(400).json({ err:true,  message: 'email /passwor can not be blank !!!' });
+        }
+
+        // check for valid email
+        if(!validator.isEmail(email)){
+            return res.status(400).json({err:true, message: 'Invalid email format' });
+        }
+
+        // Check if the email is already taken
+        const existingUser = await userSchema.findOne({ email });
+            
+        // response no user
+        if (!existingUser) {
+        return res.status(400).json({err:true, message: 'Email / Username can not be found ' });
+        }
+
+        //check password
+        var flag = await bcrypt.compare(password,existingUser.password);
+        //console.log(flag);
+        
+        if(!flag){
+            return res.status(400).json({err:true, message: 'Wrong password ' });
+        }
+
+        var token = await existingUser.generateAuthToken();
+        //console.log("token: " + token);
+
+        // // //add jwt token for cookies
+        // // res.cookie('jwt', token, { httpOnly: false, maxAge: 36000000000 }); // 1 hour expiration
+
+        // res.cookie('jwt', token, {
+        //     httpOnly: true,
+        //     maxAge: 360000000, // 1 hour in milliseconds
+        //     path: '/',
+        // });
+
+        // login sucsee
+        res.status(200).json({err:false,message:"Login Sucsess...",mail:existingUser.email ,id:existingUser._id,token});
+
+    }catch(err){
+        // err code
+        console.log(err);
+        res.status(400).json({err:true,message:"Internal Server err" ,errobj:err});
+    }
+})
+
 
 
 
