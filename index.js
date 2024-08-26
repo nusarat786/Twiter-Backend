@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // cors 
-app.use(cors({ credentials: true, origin: 'http://localhost:3000/' }));
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 
 
 // using tweet routes
@@ -416,7 +416,7 @@ app.post("/login", async (req,res)=>{
         console.log("token: " + token);
 
         //add jwt token for cookies
-        res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000000000000 }); // 1 hour expiration
+        res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000000000000 ,sameSite: 'None' }); // 1 hour expiration
 
         // login sucsee
         res.status(200).json({message:"Login Sucsess..."});
