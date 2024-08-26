@@ -142,8 +142,15 @@ router.post("/login", async (req,res)=>{
         var token = await existingUser.generateAuthToken();
         //console.log("token: " + token);
 
-        //add jwt token for cookies
-        res.cookie('jwt', token, { httpOnly: false, maxAge: 36000000 }); // 1 hour expiration
+        // //add jwt token for cookies
+        // res.cookie('jwt', token, { httpOnly: false, maxAge: 36000000000 }); // 1 hour expiration
+
+        res.cookie('jwt', token, {
+            httpOnly: flase,
+            maxAge: 3600000, // 1 hour in milliseconds
+            sameSite: 'Lax', // You can change this based on your requirements
+            path: '/',
+        });
 
         // login sucsee
         res.status(200).json({err:false,message:"Login Sucsess...",mail:existingUser.email ,id:existingUser._id});
