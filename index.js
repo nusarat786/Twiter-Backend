@@ -29,9 +29,15 @@ app.use(express.json());
 // cookie parser
 app.use(cookieParser());
 
-// cors 
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+// // cors 
+// app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+// https://nusarat-tweeter-like-app.onrender.com/
 
+// Allow requests from your local frontend and the hosted API
+app.use(cors({
+  credentials: true,
+  origin: ['http://localhost:3000', 'https://nusarat-tweeter-like-app.onrender.com']
+}));
 
 // using tweet routes
 app.use('/tweetRoutes', tweetRoutes);
