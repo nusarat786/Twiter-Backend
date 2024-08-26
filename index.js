@@ -36,7 +36,7 @@ app.use(cookieParser());
 // Allow requests from your local frontend and the hosted API
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:3000', 'https://nusarat-tweeter-like-app.onrender.com','https://haveliwalanusaratfrontendtwitter.onrender.com']
+  origin: ['http://localhost:3000', 'https://nusarat-tweeter-like-app.onrender.com','https://haveliwalanusaratfrontendtwitter.onrender.com','https://twiter-frontend.vercel.app','https://twiter-frontend.vercel.app/']
 }));
 
 // using tweet routes
