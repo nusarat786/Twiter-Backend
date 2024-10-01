@@ -1,6 +1,9 @@
 
 const mongoose = require("mongoose");
-const url ='mongodb+srv://vajju:nusarat@cluster0.t6mxcqh.mongodb.net/twwiter?retryWrites=true&w=majority';
+require('dotenv').config();
+
+//const url ='mongodb+srv://vajju:nusarat@cluster0.t6mxcqh.mongodb.net/twwiter?retryWrites=true&w=majority';
+const url =process.env.API_URL;
 
 var dbConnect = ()=>{
 
@@ -13,3 +16,7 @@ var dbConnect = ()=>{
 }
 
 module.exports = dbConnect;
+
+
+
+// 73sc1g3guS8is3Gi

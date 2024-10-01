@@ -13,6 +13,7 @@ const countryList = require('../Auth/country.js');
 const nodemailer = require('nodemailer');
 const upload = multer();
 const router = express.Router();
+require('dotenv').config();
 
 
 
@@ -145,15 +146,16 @@ router.post("/login", async (req,res)=>{
         // //add jwt token for cookies
         // res.cookie('jwt', token, { httpOnly: false, maxAge: 36000000000 }); // 1 hour expiration
 
-        
+        // const expiryTime = new Date(Date.now() + 360000000); // 10 hours in milliseconds
+
         // Set the token as a cookie named 'jwt'
-res.cookie('jwt', token, {
-    httpOnly: true,
-    maxAge: 3600000, // 1 hour in milliseconds
-    sameSite: 'None', // Required for cross-site cookies
-    secure: true, // Ensures the cookie is sent only over HTTPS
-    path: '/',
-});
+        res.cookie('jwt', token, {
+            httpOnly: true,
+            maxAge: 360000000, // 1 hour in milliseconds
+            sameSite: 'None', // Required for cross-site cookies
+            secure: true, // Ensures the cookie is sent only over HTTPS
+            path: '/',
+        });
 
         // login sucsee
     res.status(200).json({err:false,message:"Login Sucsess...",mail:existingUser.email ,id:existingUser._id});
@@ -199,7 +201,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'selfielectronic@gmail.com',  // Your Gmail email address
-        pass: 'oeuz vwnf nvrr csdj'          // Your Gmail password or an app-specific password
+        pass:  process.env.GOOGEL_APP_PASSWOD        // Your Gmail password or an app-specific password
     },
 });
 
@@ -380,16 +382,17 @@ router.post("/verify-otp", async (req,res)=>{
 
 
 //update user
-router.post("/edit-user" ,auth, upload.single('pimage'), async (req,res)=>{
+router.post("/edit-user" ,auth, async (req,res)=>{
     try{
         var body = req.body;
-        const user = req.user;
+
+        console.log(body)
 
         //console.log("user");
         //console.log(user);
-        const { dob, name ,bio,country } = body;
+        const {name ,bio,country } = body;
 
-        if(validator.isEmpty(name) || validator.isEmpty(bio) || validator.isEmpty(country) || validator.isEmpty(dob)){
+        if(validator.isEmpty(name) || validator.isEmpty(bio) || validator.isEmpty(country)){
             return res.status(400).json({err:true, message: 'details can not be blanked' });
         }
 
@@ -400,27 +403,14 @@ router.post("/edit-user" ,auth, upload.single('pimage'), async (req,res)=>{
         }
 
 
-        // Check if a profile picture was uploaded
-        let pimageData = null;
-        if (req.file) {
-            // Convert the binary data to Base64
-            pimageData = req.file.buffer.toString('base64');
-        }
-
-        if(pimageData==null){
-            //pimageData=user.pimage;
-        }
-
          // Update user details in the database
         const updatedUser = await userSchema.findByIdAndUpdate(
-            user._id,
+            req.user._id,
             {
                 $set: {
-                    dob,
                     name,
                     bio,
-                    country,
-                    pimage: pimageData || user.pimage,
+                    country              
                 },
             },
             { new: true }
