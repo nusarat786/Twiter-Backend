@@ -45,6 +45,10 @@ app.use('/tweetRoutes', tweetRoutes);
 // using tweet routes
 app.use('/userRoutes', userRoutes);
 
+//
+app.get("/test" ,(req,res)=>{
+  res.status(200).json({"error":false,"message":"tested"})
+})
 
 app.listen(4000, function(err){
     if (err) console.log("Error in server setup")
